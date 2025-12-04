@@ -5,20 +5,28 @@ import json
 
 from .models import Producto
 
+
+def inicio(request):
+    """
+    Vista simple para la ruta raiz.
+    """
+    return JsonResponse({"message": "API de productos operativa"})
+
+
 @csrf_exempt
 def crear_producto(request):
     """
     Crea un producto a partir de un JSON enviado por POST.
     """
     if request.method != "POST":
-        return JsonResponse({"error": "Método no permitido"}, status=405)
+        return JsonResponse({"error": "Metodo no permitido"}, status=405)
 
     try:
         datos = json.loads(request.body.decode("utf-8"))
         nombre = datos.get("nombre")
         precio = datos.get("precio")
-    except:
-        return JsonResponse({"error": "JSON inválido"}, status=400)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "JSON invalido"}, status=400)
 
     if not nombre or precio is None:
         return JsonResponse({"error": "Faltan datos"}, status=400)
@@ -29,9 +37,10 @@ def crear_producto(request):
         status=201
     )
 
+
 def detalle_producto(request, producto_id):
     """
-    Devuelve la información de un producto por su ID.
+    Devuelve la informacion de un producto por su ID.
     """
     try:
         producto = Producto.objects.get(id=producto_id)

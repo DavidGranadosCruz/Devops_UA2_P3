@@ -7,10 +7,7 @@ from .models import Producto
 
 
 def inicio(request):
-    """
-    Vista simple para la ruta raiz.
-    """
-    return JsonResponse({"message": "API de productos operativa"})
+    return JsonResponse({"message": "Me encanta Devops!!"})
 
 
 @csrf_exempt
